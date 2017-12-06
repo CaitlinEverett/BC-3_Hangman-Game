@@ -35,42 +35,62 @@
 ////////////global objects and variables
 /////////////////////////////////////////
 //for choosing a word at random
-var plantGame = {
-	wordArray: [`shrub`, `tree`, `sprout`, `seed`, `forest`],
-}
 
-var arrayIndex = 1; //helps pick a word
-var currentGame = plantGame; //sets to random game style
-var word = currentGame.wordArray[arrayIndex]; //easier to access var for switching contexts
+var wordArray= [`shrub`, `tree`, `sprout`, `seed`, `forest`,`copper`, `decisive`, `statuesque`, `popcorn`, `fascinated`];
+var arrayIndex = 0; //pick a word with this index #
 var correctGuesses = 0;  //counts correct guesses for current word
-var guessNum = word.length;
+var word = wordArray[arrayIndex];
 var wins = 0;
 var losses = 0;
 var guesses = 0;
 var wrongLetters = "";
+var letwidth = 30;
 
 //regex function to check if input is a letter
 function isAlpha(str) {
   return /^[a-zA-Z]+$/.test(str);
 }
 
+//chooses random word from array
+function randomWord(){
+	if (arrayIndex < 8){ //not truly random yet
+		arrayIndex +=1; 
+	}else if (arrayIndex ==9){
+		arrayIndex = 0;
+	}else{
+		arrayIndex += 1;
+	}
 
-
-///////////////////////////////////////////////////////////////////
-////////////ui setup 
-/////////////////////////////////////////
-//on document ready, app will pick game theme & word randomly & create HTML structure
-$(`document`).ready(function(){
-	//for each letter in the current word
-	var letWidth = (($(`#letters`).width()/word.length)-40);
+	//pick word for this game
+	word = wordArray[arrayIndex]; //easier to access var for switching contexts
 
 	//set guess cap to word length
 	guesses = word.length + 3;
+	correctGuesses = 0;
+	wrongLetters = "";
+}
+
+function clearDoc(){
+	//clear any leftovers from previous games
+	$(`#letters`).empty();
+	$(`#wrongLetters`).empty();	
+}
+
+//sets up UI
+function setupDoc(){
+
+	//word = wordArray[arrayIndex];
 
 	//set UI up with blank score card
 	$(`#wins`).text(wins);
 	$(`#losses`).text(losses);
 	$(`#guesses`).text(guesses);
+
+
+
+	//for each letter in the current word
+	letWidth = (($(`#letters`).width()/word.length)-40);
+
 
 	//for each letter in the current word
 	for (var i = 0; i < word.length; i++) {
@@ -78,16 +98,40 @@ $(`document`).ready(function(){
 			newLetter.addClass(`letter letter${i}`);		
 			$(`#letters`).append(newLetter);
 			$(`.letter`).width(letWidth);
-		};	
+		};
+}
 
 
-	//resizes letter div on document size change
-	$(window).resize(function(){
-		var letWidth = (($(`#letters`).width()/word.length)-40);
-		$(`.letter`).width(letWidth);
-	//console.log(`resize happened`)
+//function to let user play again
+function playAgain(){
+	var playButton = $(`<button>`);
+	playButton.addClass('playButton');
+	$(`#letters`).text(`Play again?`)
+	$(`.playButton`).prop(`text`, `yes`);
+	$(`#letters`).append(playButton);
+	$(`.playButton`).on("click", function(){
+		clearDoc();
+		randomWord();
+		setupDoc();
 	});
+}
 
+//resizes letter div on document size change
+$(window).resize(function(){
+	var letWidth = (($(`#letters`).width()/word.length)-40);
+	$(`.letter`).width(letWidth);
+//console.log(`resize happened`)
+});
+
+
+
+//on document ready, run important setup functions
+$(`document`).ready(function(){
+
+	clearDoc();
+	randomWord();
+	setupDoc();
+		
 });
 
 
@@ -144,12 +188,9 @@ $(`document`).ready(function(){
 					correctGuesses +=1;
 
 					//check to see if user has won yet
-					//congratulate them if they did win
+					//call function if they did win
 					if(correctGuesses == word.length){
-						$(`#keyPress`).text(`You win!`);
-						wins +=1;
-						$(`#wins`).text(wins);
-						$(`#letters`).empty;
+						playerWon();
 					}
 				}
 
@@ -167,39 +208,43 @@ $(`document`).ready(function(){
 				var wrongLetter = $(`<div>`);
 				wrongLetter.addClass(`wrongLetter`);
 				wrongLetter.text(key);		
-				$(`#guessWell`).append(wrongLetter);
+				$(`#wrongLetters`).append(wrongLetter);
 				wrongLetters += key;
 			}
 
 			if(guesses == 0){
-				$(`#keyPress`).text(`Better luck next time`);
-				losses +=1;
-				$(`#losses`).text(losses);
+				//player has lost
+				playerLost();
 			}
 			
-
-
 		};
+
+
+		///////////////////////////////
+		//Player has won
+		function playerWon(){
+			$(`#keyPress`).text(`You win!`);
+			wins +=1;
+			$(`#wins`).text(wins);
+			clearDoc();
+			playAgain();
+		}
+
+
+
+		///////////////////////////////
+		//Player has lost
+		function playerLost(){
+			$(`#keyPress`).text(`Better luck next time`);
+			losses +=1;
+			$(`#losses`).text(losses);
+			clearDoc();
+			playAgain();
+		}
+
+
 		
 	});
-
-
-	//UI shows current letter choice
-	//short delay before next step 
-
-	//letter is registered as correct or incorrect guess
-	//short delay before next step
-
-	//if letter completes word, register win!
-	//play congratulations stuff
-	//restart game with new word and ui theme
-	//make sure not to choose previous word or theme
-
-	//if guess is not a win, # guesses left decrements 
-	//letter registers to correct or incorrect UI spot
-
-	//prompt user to enter another letter in UI
-	//keyUp cycle loops
 
 
 
