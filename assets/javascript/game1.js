@@ -36,7 +36,7 @@
 /////////////////////////////////////////
 //for choosing a word at random
 var plantGame = {
-	wordArray: ['shrub', 'tree', 'sprout', 'seed', 'forest'],
+	wordArray: [`shrub`, `tree`, `sprout`, `seed`, `forest`],
 }
 
 var arrayIndex = 1; //helps pick a word
@@ -47,6 +47,7 @@ var guessNum = word.length;
 var wins = 0;
 var losses = 0;
 var guesses = 0;
+var wrongLetters = "";
 
 //regex function to check if input is a letter
 function isAlpha(str) {
@@ -59,32 +60,32 @@ function isAlpha(str) {
 ////////////ui setup 
 /////////////////////////////////////////
 //on document ready, app will pick game theme & word randomly & create HTML structure
-$('document').ready(function(){
+$(`document`).ready(function(){
 	//for each letter in the current word
-	var letWidth = (($('#letters').width()/word.length)-40);
+	var letWidth = (($(`#letters`).width()/word.length)-40);
 
 	//set guess cap to word length
-	guesses = word.length;
+	guesses = word.length + 3;
 
 	//set UI up with blank score card
-	$('#wins').text(wins);
+	$(`#wins`).text(wins);
 	$(`#losses`).text(losses);
 	$(`#guesses`).text(guesses);
 
 	//for each letter in the current word
 	for (var i = 0; i < word.length; i++) {
-			var newLetter = $('<div>');
+			var newLetter = $(`<div>`);
 			newLetter.addClass(`letter letter${i}`);		
-			$('#letters').append(newLetter);
-			$('.letter').width(letWidth);
+			$(`#letters`).append(newLetter);
+			$(`.letter`).width(letWidth);
 		};	
 
 
 	//resizes letter div on document size change
 	$(window).resize(function(){
-		var letWidth = (($('#letters').width()/word.length)-40);
-		$('.letter').width(letWidth);
-	//console.log('resize happened')
+		var letWidth = (($(`#letters`).width()/word.length)-40);
+		$(`.letter`).width(letWidth);
+	//console.log(`resize happened`)
 	});
 
 });
@@ -99,19 +100,19 @@ $('document').ready(function(){
 //main event handler
 ////////////////////////////////////////
 	$(document).keypress(function(event){
-		//console.log('keyup');
+		//console.log(`keyup`);
 
 		//var for contents of keypress event
 		var key = event.key;
 
-		//if the entry is not alphabetical, tell user 'use a letter!'
+		//if the entry is not alphabetical, tell user `use a letter!`
 		if(! isAlpha(key)){
-			$('#keyPress').text('You must enter a letter to play');
+			$(`#keyPress`).text(`You must enter a letter to play`);
 		}
 		//if the entry is not alphabetical, get user to enter correct type
 		else{
 			//show the letter in the UI
-			$('#keyPress').text(`You have entered ${key}`);
+			$(`#keyPress`).text(`You have entered ${key}`);
 
 			//compare it to contents of current word
 			compareString(key);
@@ -145,9 +146,10 @@ $('document').ready(function(){
 					//check to see if user has won yet
 					//congratulate them if they did win
 					if(correctGuesses == word.length){
-						$('#keyPress').text(`You win!`);
+						$(`#keyPress`).text(`You win!`);
 						wins +=1;
-						$('#wins').text(wins);
+						$(`#wins`).text(wins);
+						$(`#letters`).empty;
 					}
 				}
 
@@ -157,18 +159,24 @@ $('document').ready(function(){
 		///////////////////////////////
 		//THERE IS NOT A MATCH 
 		function noMatch(key){	
-			var wrongLetter = $('<div>');
-			wrongLetter.addClass(`wrongLetter`);
-			wrongLetter.text(key);		
-			$('#guessWell').append(wrongLetter);
+
 			guesses -=1; 
 			$(`#guesses`).text(guesses);
+
+			if(wrongLetters.indexOf(key) <= -1){
+				var wrongLetter = $(`<div>`);
+				wrongLetter.addClass(`wrongLetter`);
+				wrongLetter.text(key);		
+				$(`#guessWell`).append(wrongLetter);
+				wrongLetters += key;
+			}
 
 			if(guesses == 0){
 				$(`#keyPress`).text(`Better luck next time`);
 				losses +=1;
 				$(`#losses`).text(losses);
 			}
+			
 
 
 		};
