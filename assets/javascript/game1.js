@@ -62,6 +62,15 @@ function isAlpha(str) {
 $('document').ready(function(){
 	//for each letter in the current word
 	var letWidth = (($('#letters').width()/word.length)-40);
+
+	//set guess cap to word length
+	guesses = word.length;
+
+	//set UI up with blank score card
+	$('#wins').text(wins);
+	$(`#losses`).text(losses);
+	$(`#guesses`).text(guesses);
+
 	//for each letter in the current word
 	for (var i = 0; i < word.length; i++) {
 			var newLetter = $('<div>');
@@ -82,9 +91,13 @@ $('document').ready(function(){
 
 
 ///////////////////////////////////////////////////////////////////
-////////////game code 
+////////////game code  -- starts when keypress event happens
 /////////////////////////////////////////
+
+////////////////////////////////////////
 //on keyUp, player has chosen first letter
+//main event handler
+////////////////////////////////////////
 	$(document).keypress(function(event){
 		//console.log('keyup');
 
@@ -104,10 +117,22 @@ $('document').ready(function(){
 			compareString(key);
 		}
 
-		//define function to compare input to word string
+
+		///////////////////////////////
+		//COMPARE INPUT TO WORD
 		function compareString(key){
 			//comparison variable
 
+			if(word.indexOf(key) > -1){
+				foundLetter(key);
+			}else{
+				noMatch(key);
+			}
+		};
+
+		///////////////////////////////
+		//THERE IS A MATCH 
+		function foundLetter(key){
 			for (var i = 0; i < word.length; i++) {
 
 				//if there is a match in one or more places in the word array
@@ -122,22 +147,31 @@ $('document').ready(function(){
 					if(correctGuesses == word.length){
 						$('#keyPress').text(`You win!`);
 						wins +=1;
-						}
-					}else {
-					//add letters to the guess well
-					var wrongLetter = $('<div>');
-					wrongLetter.addClass(`wrongLetter`);
-					wrongLetter.text(key);		
-					$('#guessWell').append(wrongLetter);
+						$('#wins').text(wins);
 					}
-
 				}
-				//if there is not a match in the array anywhere
+
+			}
+		}
+
+		///////////////////////////////
+		//THERE IS NOT A MATCH 
+		function noMatch(key){	
+			var wrongLetter = $('<div>');
+			wrongLetter.addClass(`wrongLetter`);
+			wrongLetter.text(key);		
+			$('#guessWell').append(wrongLetter);
+			guesses -=1; 
+			$(`#guesses`).text(guesses);
+
+			if(guesses == 0){
+				$(`#keyPress`).text(`Better luck next time`);
+				losses +=1;
+				$(`#losses`).text(losses);
+			}
+
 
 		};
-
-		
-	
 		
 	});
 

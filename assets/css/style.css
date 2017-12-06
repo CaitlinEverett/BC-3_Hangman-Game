@@ -48,6 +48,19 @@ nav{
   vertical-align:center;
 }
 
+.wrongLetter{
+  background-color: #fff;
+  height:80px;
+  min-width:40px;
+  display:block;
+  float:left;
+  padding:10px;
+  margin:10px;
+  font-size:32px;
+  text-align:center;
+  vertical-align:center; 
+}
+
 #scoreWell{
   height:120px;
 }
