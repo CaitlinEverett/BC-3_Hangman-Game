@@ -86,9 +86,6 @@ function setupDoc(){
 	$(`#wins`).text(wins);
 	$(`#losses`).text(losses);
 	$(`#guesses`).text(guesses);
-	$(`#guessWell`).show();
-
-
 
 	//for each letter in the current word
 	letWidth = (($(`#letters`).width()/word.length)-40);
@@ -204,6 +201,8 @@ $(`document`).ready(function(){
 		//THERE IS NOT A MATCH 
 		function noMatch(key){	
 
+			$(`#guessWell`).show();
+
 			guesses -=1; 
 			$(`#guesses`).text(guesses);
 
@@ -226,7 +225,7 @@ $(`document`).ready(function(){
 		///////////////////////////////
 		//Player has won
 		function playerWon(){
-			$(`#keyPress`).text(`You win!`);
+			$(`#keyPress`).text(`The word was ${word}! You win!`);
 			wins +=1;
 			$(`#wins`).text(wins);
 			clearDoc();
