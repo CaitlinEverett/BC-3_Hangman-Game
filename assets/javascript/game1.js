@@ -43,7 +43,7 @@ var word = wordArray[arrayIndex];
 var wins = 0;
 var losses = 0;
 var guesses = 0;
-var wrongLetters = "";
+var guessedLetters = "";
 var letwidth = 30;
 
 //regex function to check if input is a letter
@@ -67,13 +67,14 @@ function randomWord(){
 	//set guess cap to word length
 	guesses = word.length + 3;
 	correctGuesses = 0;
-	wrongLetters = "";
+	guessedLetters = "";
 }
 
 function clearDoc(){
 	//clear any leftovers from previous games
 	$(`#letters`).empty();
 	$(`#wrongLetters`).empty();	
+	$(`#guessWell`).hide();
 }
 
 //sets up UI
@@ -85,6 +86,7 @@ function setupDoc(){
 	$(`#wins`).text(wins);
 	$(`#losses`).text(losses);
 	$(`#guesses`).text(guesses);
+	$(`#guessWell`).show();
 
 
 
@@ -106,9 +108,9 @@ function setupDoc(){
 function playAgain(){
 	var playButton = $(`<button>`);
 	playButton.addClass('playButton');
-	$(`#letters`).text(`Play again?`)
-	$(`.playButton`).prop(`text`, `yes`);
+	$(`#letters`).html(`<div id="announce">Play again?</div>`)
 	$(`#letters`).append(playButton);
+	$(`.playButton`).html(`yes`);
 	$(`.playButton`).on("click", function(){
 		clearDoc();
 		randomWord();
@@ -168,7 +170,7 @@ $(`document`).ready(function(){
 		function compareString(key){
 			//comparison variable
 
-			if(word.indexOf(key) > -1){
+			if(word.indexOf(key) > -1 && guessedLetters.indexOf(key) <= -1){
 				foundLetter(key);
 			}else{
 				noMatch(key);
@@ -186,6 +188,7 @@ $(`document`).ready(function(){
 					//change text in UI
 					$(`.letter${i}`).text(key);	
 					correctGuesses +=1;
+					guessedLetters += key;
 
 					//check to see if user has won yet
 					//call function if they did win
@@ -204,12 +207,12 @@ $(`document`).ready(function(){
 			guesses -=1; 
 			$(`#guesses`).text(guesses);
 
-			if(wrongLetters.indexOf(key) <= -1){
+			if(guessedLetters.indexOf(key) <= -1){
 				var wrongLetter = $(`<div>`);
 				wrongLetter.addClass(`wrongLetter`);
 				wrongLetter.text(key);		
 				$(`#wrongLetters`).append(wrongLetter);
-				wrongLetters += key;
+				guessedLetters += key;
 			}
 
 			if(guesses == 0){

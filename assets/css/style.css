@@ -8,6 +8,13 @@ html {
 body {
   margin-bottom: 60px; /* Margin bottom by footer height */
 }
+
+header{
+  margin-top:50px;
+}
+main{
+  padding-top:40px;
+}
 .footer {
   position: absolute;
   bottom: 0;
@@ -17,9 +24,6 @@ body {
   background-color: #f5f5f5;
 }
 
-nav{
-  margin-bottom:50px;
-}
 
 #lettersOverFlow{
   height:125px;
@@ -32,7 +36,16 @@ nav{
   margin:0px auto;
   padding:10px 0px 10px 0px;
   margin-bottom:40px;
-  margin-top:40px;
+  margin-top:20px;
+  text-align:center;
+}
+
+#announce{
+  font-size:32px;
+}
+
+.playButton{
+  font-size:32px;
 }
 
 .letter{
@@ -71,4 +84,12 @@ nav{
 .container{
   max-width: 900px;
   min-width:400px;
+}
+
+#scoreWell{
+  text-align:center;
+}
+
+#playButton{
+  content:"Yes";
 }

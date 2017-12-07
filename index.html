@@ -9,37 +9,25 @@
 </head>
 <body>
 
-<!-- top navbar -->
-<div class="container">
-	<nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
-        <a class="navbar-brand" href="#">Simple 'Hangman' Game</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="">
-          <ul class="navbar-nav w-100 justify-content-end">
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown09" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Other Bootcamp Work</a>
-              <div class="dropdown-menu" aria-labelledby="dropdown09">
-                <a class="dropdown-item" href="#">Basic Portfolio</a>
-                <a class="dropdown-item" href="#">Responsive Portfolio</a>
-                <a class="dropdown-item" href="#">Bootstrap Portfolio</a>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </nav>
-</div>
-<!-- end navbar -->
-
+<header>
+	<h1 class="text-center">Letter-at-a-Time</h1>
+    <p class="lead text-center" id="keyPress">Your goal is to guess which the word on the screen.  Press any key to get started.</p>  
+</header>
 
 <!-- main div -->
 <main role="main" class="container">
   <!-- jumbotron -->
   <div class="jumbotron">
-    <h1 class="text-center">GUESS A WORD</h1>
-    <p class="lead text-center" id="keyPress">Press any key to get started.</p>  
+   
+
+		<!-- scorewell -->
+		<div class="well" id="scoreWell">
+				<div class="counter">Wins: <span id="wins">0</span></div>
+				<div class="counter">Losses: <span id="losses">0</span></div>
+				<div class="counter">Guesses: <span id="guesses">0</span></div>
+			</div>
+
+		<!-- end scorewell  -->
 
     	<!-- container for letters display -->
 		<div class="container">
@@ -49,20 +37,6 @@
 			</div>
 		</div>
 		<!-- end letters display -->
-
-		<!-- scorewell -->
-		<div class="well" id="scoreWell">
-			<div class="row">
-				<div class="col">
-					<div class="row">
-						<div class="counter col">Wins: <span id="wins">0</span></div>
-						<div class="counter col">Losses: <span id="losses">0</span></div>
-						<div class="counter col">Guesses: <span id="guesses">0</span></div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- end scorewell  -->
 
 		<!-- guess well -->
 		<div class="well" id="guessWell">
@@ -75,7 +49,7 @@
 		</div>
 		<!-- end guess well -->
 
-
+		</div>
 	</div>
 	<!-- end jumbotron 1-->
 
